@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+import scrapy
+from scrapy_demo.items import ScrapyDemoItem
+
+
+class EttodaySpider(scrapy.Spider):
+    name = 'ettoday'
+    allowed_domains = ['www.ettoday.net']
+    start_urls = ['https://www.ettoday.net/news/20201004/1824032.htm',
+                  'https://www.ettoday.net/news/20201009/1826868.htm',
+                  'https://www.ettoday.net/news/20201228/1885895.htm',
+                  'https://www.ettoday.net/news/20201228/1886071.htm',
+                  'https://www.ettoday.net/news/20201228/1886140.htm']
+
+    def parse(self, response):
+        item = ScrapyDemoItem()
+        item['title'] = response.xpath('//title/text()').get()
+        item['content'] = response.xpath('//div[@itemprop="articleBody"]//p/text()').getall()
+        title= response.xpath('//title/text()').get()
+        content= response.xpath('//div[@itemprop="articleBody"]//p/text()').getall()
+        #yield item
+        print(title)
+        print(content)
+        yield item
